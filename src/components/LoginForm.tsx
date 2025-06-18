@@ -15,6 +15,7 @@ const Login: React.FC = () => {
     const { login } = useAuthContext();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
@@ -26,7 +27,7 @@ const Login: React.FC = () => {
 
         try {
             await login(form);
-            router.push('/dashboard');
+            router.push('/main');
         } catch (err) {
             setError('Correo o contraseña incorrectos');
         } finally {

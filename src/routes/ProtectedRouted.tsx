@@ -2,7 +2,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useAuthContext } from '@/context/AuthContext';
 
 interface ProtectedRouteProps {
@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     }
 
     if (!authContext.session) {
-        router.push(`/auth/login?from=${router.pathname}`);
+        router.push('/auth/login');
         return null;
     }
 

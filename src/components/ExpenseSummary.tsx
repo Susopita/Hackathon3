@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { ExpenseSummaryItemResponse } from '/ExpenseSummaryResponse';
+import { ExpenseSummaryItemResponse } from '../interfaces/Expense/ExpenseSummaryResponse';
 
 interface ExpenseSummaryProps {
     onCategoryClick?: (categoryId: number, categoryName: string) => void;

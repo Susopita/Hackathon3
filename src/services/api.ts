@@ -1,7 +1,14 @@
-import axios from 'axios';
-// http://127.0.0.1:8000
-// https://hck-2-mentorias.onrender.com/api
-const API_URL = `http://${import.meta.env.VITE_BASE_URL}:8000`;
+import { LoginResponse } from '@/interfaces/Auth/LoginResponse';
+import { LoginRequest } from '@/interfaces/Auth/LoginRequest';
+import { RegisterRequest } from '@/interfaces/Auth/RegisterRequest';
+import { ExpenseDetailItemResponse } from '@/interfaces/Expense/ExpenseDetailsItemResponse';
+import { ExpenseSummaryItemResponse } from '@/interfaces/Expense/ExpenseSummaryResponse';
+import axios, { AxiosResponse } from 'axios';
+import { ExpenseDetailsRequest } from '@/interfaces/Expense/ExpenseDetailsRequest';
+import { ExpenseRequest } from '@/interfaces/Expense/ExpenseRequest';
+import { ExpenseCategoryResponse } from '@/interfaces/Expense/ExpenseCategoryResponse';
+
+const API_URL = `http://${process.env.NEXT_PUBLIC_BASE_URL}:8080`;
 
 const api = axios.create({
     baseURL: API_URL,
@@ -27,38 +34,47 @@ api.interceptors.response.use(
         return Promise.reject(error);
     });
 
+export const setAuthToken = (token: string) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+};
+
 export const authAPI = {
-    login: async (email, password) => {
-        const response = await api.post('/auth/login', { email, password });
-        return response.data;
+    login: async (loginRequest: LoginRequest) => {
+        const response = await api.post<LoginResponse>('/authentication/login', loginRequest);
+        return response;
+    },
+    register: async (registerRequest: RegisterRequest) => {
+        const response = await api.post<string>('/authentication/register', registerRequest);
+        return response; // Esto -> "OK"
     }
 };
 
-export const moviesAPI = {
-    search: async (query, page = 1) => {
-        const response = await api.get(`/movies?search=${query}&page=${page}`);
-        return response.data;
+export const gastosAPI = {
+    getSummary: async () => {
+        const response = await api.get<ExpenseSummaryItemResponse[]>('/expenses_summary');
+        return response;
     },
 
-    getDetails: async (id) => {
-        const response = await api.get(`/movies/${id}`);
-        return response.data;
-    }
-};
-
-export const favoritesAPI = {
-    get: async () => {
-        const response = await api.get('/favorites');
-        return response.data;
+    getDetails: async (expenseDetailsRequest: ExpenseDetailsRequest) => {
+        const response = await api.get<ExpenseDetailItemResponse[]>('/expenses/detail', {
+            params: {
+                year: expenseDetailsRequest.year,
+                month: expenseDetailsRequest.month,
+                categoryId: expenseDetailsRequest.categoryId
+            }
+        });
+        return response;
     },
-
-    add: async (movieId) => {
-        const response = await api.post('/favorites', { movieId });
-        return response.data;
+    postExpense: async (expenseRequest: ExpenseRequest) => {
+        const response = await api.post<void>('/expenses', expenseRequest);
+        return response;
     },
-
-    remove: async (movieId) => {
-        const response = await api.delete(`/favorites/${movieId}`);
-        return response.data;
+    deleteExpense: async (id: number) => {
+        const response = await api.delete<void>(`/expenses/${id}`);
+        return response;
+    },
+    getExpenseCategories: async () => {
+        const response = await api.get<ExpenseCategoryResponse[]>('/expenses_category');
+        return response;
     }
 };

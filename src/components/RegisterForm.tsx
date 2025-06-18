@@ -26,48 +26,51 @@ export default function RegisterForm() {
     }
 
     return (
-        <section className="home-section rounded-2xl p-8 w-full max-w-xl shadow-md">
-            <h1 className="text-2xl font-bold mb-6">Registrarse a Ahorrista</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full border border-gray-600 bg-transparent rounded-md p-2"
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="passwd" className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-                    <input
-                        type="password"
-                        name="passwd"
-                        id="passwd"
-                        value={formData.passwd}
-                        onChange={handleChange}
-                        className="w-full border border-gray-600 bg-transparent rounded-md p-2"
-                        required
-                    />
-                </div>
-                <button
-                    id="registerSubmit"
-                    className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-full cursor-pointer mt-4 hover:bg-blue-700 transition"
-                    type="submit"
-                >
-                    Registrarse
-                </button>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <form
+            onSubmit={handleSubmit}
+            className="w-full max-w-sm p-6 bg-white rounded shadow"
+        >
+            <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
+                Registrarse a Ahorrista
+            </h2>
 
-                <p className="mt-4 text-center text-sm">
-                    ¿Ya tienes una cuenta?{' '}
-                    <Link href="/auth/login" className="text-blue-600 hover:underline">
-                        Inicia sesión
-                    </Link>
-                </p>
-            </form>
-        </section>
-    );
+            <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Correo electrónico"
+                required
+                className="w-full mb-4 p-2 border rounded text-blue-600"
+            />
+
+            <input
+                type="password"
+                name="passwd"
+                value={formData.passwd}
+                onChange={handleChange}
+                placeholder="Contraseña"
+                required
+                className="w-full mb-4 p-2 border rounded text-blue-600"
+            />
+
+            <button
+                id="registerSubmit"
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            >
+                Registrarse
+            </button>
+
+            <p className="mt-4 text-center text-sm">
+                ¿Ya tienes una cuenta?{' '}
+                <Link href="/auth/login" className="text-blue-600 hover:underline">
+                    Inicia sesión
+                </Link>
+            </p>
+        </form>
+    </div>
+);
+
 }

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { authAPI } from '@/services/api';
 import { LoginRequest } from '@/interfaces/Auth/LoginRequest';
 import { useAuthContext } from '@/context/AuthContext';
 import Link from 'next/link';

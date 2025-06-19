@@ -1,4 +1,3 @@
-// src/app/main/page.tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -7,6 +6,7 @@ import { ExpenseSummaryItemResponse } from '@/interfaces/Expense/ExpenseSummaryR
 import { ExpenseCategoryResponse } from '@/interfaces/Expense/ExpenseCategoryResponse';
 import { ExpenseDetailItemResponse } from '@/interfaces/Expense/ExpenseDetailsItemResponse';
 import { ExpenseDetailsRequest } from '@/interfaces/Expense/ExpenseDetailsRequest';
+import ExpenseCard from '@/components/GastoSummary';
 
 const MainPage = () => {
     const [summaryData, setSummaryData] = useState<ExpenseSummaryItemResponse[]>([]);
@@ -19,6 +19,7 @@ const MainPage = () => {
         const fetchSummary = async () => {
             try {
                 const response = await gastosAPI.getSummary();
+                console.log(response.data);
                 setSummaryData(response.data);
             } catch (error) {
                 console.error("Error fetching summary data:", error);
@@ -41,6 +42,7 @@ const MainPage = () => {
 
         try {
             const response = await gastosAPI.getDetails(expenseDetailsRequest);
+            console.log(response.data);
             setDetailData(response.data);
             setSelectedCategory(category); // Guardar la categoría seleccionada
         } catch (error) {
@@ -51,24 +53,14 @@ const MainPage = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <main className="p-4 w-full bg-amber-200">
             <h1 className="text-2xl font-bold mb-4">Resumen de Gastos</h1>
 
             {/* Mostrar el resumen de gastos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {summaryData.map((item) => (
-                    <div key={item.id} className="border p-4 rounded-lg bg-white shadow-md">
-                        <h2 className="text-xl font-semibold">{item.expenseCategory.name}</h2>
-                        <p>Año: {item.year}</p>
-                        <p>Mes: {item.month}</p>
-                        <p>Total: ${item.amount}</p>
-                        <button
-                            onClick={() => handleCategoryClick(item.expenseCategory)}
-                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                        >
-                            Ver detalles
-                        </button>
-                    </div>
+
+                    <ExpenseCard key={item.id} expenseCategory={item.expenseCategory} year={item.year} month={item.month} amount={item.amount} onClick={() => handleCategoryClick(item.expenseCategory)} />
                 ))}
             </div>
 
@@ -81,7 +73,7 @@ const MainPage = () => {
                     {isLoading ? (
                         <p>Cargando detalles...</p>
                     ) : (
-                        <ul>
+                        <ul className="space-y-4">
                             {detailData.map((detail) => (
                                 <li key={detail.id} className="border-b py-2">
                                     <p><strong>Fecha:</strong> {detail.date}</p>
@@ -93,7 +85,7 @@ const MainPage = () => {
                     )}
                 </div>
             )}
-        </div>
+        </main>
     );
 };
 

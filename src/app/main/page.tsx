@@ -53,40 +53,60 @@ const MainPage = () => {
     };
 
     return (
-        <main className="p-4 w-full bg-amber-200">
-            <h1 className="text-2xl font-bold mb-4">Resumen de Gastos</h1>
+  <main className="min-h-screen bg-gray-100 p-6 flex justify-center">
+    <div className="w-full max-w-6xl">
+      <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">
+        Resumen de Gastos
+      </h1>
 
-            {/* Mostrar el resumen de gastos */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {summaryData.map((item) => (
+      {/* Tarjetas del resumen */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {summaryData.map((item) => (
+          <ExpenseCard
+            key={item.id}
+            expenseCategory={item.expenseCategory}
+            year={item.year}
+            month={item.month}
+            amount={item.amount}
+            onClick={() => handleCategoryClick(item.expenseCategory)}
+          />
+        ))}
+      </div>
 
-                    <ExpenseCard key={item.id} expenseCategory={item.expenseCategory} year={item.year} month={item.month} amount={item.amount} onClick={() => handleCategoryClick(item.expenseCategory)} />
-                ))}
-            </div>
+      {/* Detalles de categoría seleccionada */}
+      {selectedCategory && (
+        <div className="bg-white p-6 rounded shadow-md">
+          <h2 className="text-xl font-semibold mb-4 text-blue-600 text-center">
+            Detalles de {selectedCategory.name}
+          </h2>
 
-            {/* Mostrar los detalles solo si una categoría ha sido seleccionada */}
-            {selectedCategory && (
-                <div className="mt-8">
-                    <h2 className="text-xl font-semibold mb-4">
-                        Detalles de {selectedCategory.name}
-                    </h2>
-                    {isLoading ? (
-                        <p>Cargando detalles...</p>
-                    ) : (
-                        <ul className="space-y-4">
-                            {detailData.map((detail) => (
-                                <li key={detail.id} className="border-b py-2">
-                                    <p><strong>Fecha:</strong> {detail.date}</p>
-                                    <p><strong>Categoría:</strong> {detail.category.name}</p>
-                                    <p><strong>Monto:</strong> ${detail.amount}</p>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            )}
-        </main>
-    );
+          {isLoading ? (
+            <p className="text-gray-600 text-center">Cargando detalles...</p>
+          ) : (
+            <ul className="space-y-4">
+              {detailData.map((detail) => (
+                <li
+                  key={detail.id}
+                  className="border-b pb-3 text-gray-700"
+                >
+                  <p>
+                    <strong>Fecha:</strong> {detail.date}
+                  </p>
+                  <p>
+                    <strong>Categoría:</strong> {detail.category.name}
+                  </p>
+                  <p>
+                    <strong>Monto:</strong> ${detail.amount.toFixed(2)}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
+  </main>
+);
 };
 
 export default MainPage;

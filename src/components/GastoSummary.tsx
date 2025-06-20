@@ -18,7 +18,7 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
     onClick,
 }) => {
     return (
-        <div className="bg-red-500 rounded shadow p-4">
+        <div className="bg-white rounded shadow p-4">
             <h2 className="text-xl font-semibold">{expenseCategory.name}</h2>
             <p className="mt-2">Año: {year}</p>
             <p>Mes: {month}</p>
